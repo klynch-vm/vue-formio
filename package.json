@@ -7,6 +7,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
+    "lint": "eslint src/**/*.{js,ts,vue}",
+    "pretty": "prettier --write {src,types}/**/*.{js,ts,vue}",
     "watch": "tsc -w"
   },
   "repository": {
@@ -26,16 +28,25 @@
   "homepage": "https://github.com/formio/vue-formio#readme",
   "dependencies": {
     "@types/vue": "^2.0.0",
+    "@typescript-eslint/eslint-plugin": "^2.24.0",
+    "@vue/eslint-config-prettier": "^6.0.0",
+    "@vue/eslint-config-typescript": "^5.0.2",
+    "eslint-plugin-prettier": "^3.1.2",
     "formiojs": "^4.1.1",
+    "prettier": "^1.19.1",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
     "vue-property-decorator": "^8.2.2"
   },
   "devDependencies": {
     "@types/node": "^4.9.3",
+    "@typescript-eslint/parser": "^2.24.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-vue": "^6.2.2",
     "typescript": "^2.9.2",
     "typescript-eslint-parser": "^13.0.0"
   },
+  "private": true,
   "files": [
     "lib"
   ]

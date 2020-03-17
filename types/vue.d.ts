@@ -3,7 +3,7 @@
  */
 
 import Vue from "vue";
-import formiojs from 'formiojs';
+import formiojs from "formiojs";
 
 declare module "vue/types/vue" {
   interface Vue {

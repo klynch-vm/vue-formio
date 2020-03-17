@@ -1,9 +1,9 @@
 /* globals console, Promise */
-import Vue from 'vue';
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import FormioFormBuilder from 'formiojs/FormBuilder';
-import AllComponents from 'formiojs/components';
-import Components from 'formiojs/components/Components';
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
+import FormioFormBuilder from "formiojs/FormBuilder";
+import AllComponents from "formiojs/components";
+import Components from "formiojs/components/Components";
 Components.setComponents(AllComponents);
 
 @Component
@@ -17,7 +17,7 @@ export class FormBuilder extends Vue {
   @Prop()
   options?: any;
 
-  @Watch('form')
+  @Watch("form")
   formChange(value: object) {
     if (this.builder) {
       this.builder.instance.form = value;
@@ -25,12 +25,11 @@ export class FormBuilder extends Vue {
   }
 
   mounted() {
-    this.initializeBuilder()
-      .catch((err) => {
-        /* eslint-disable no-console */
-        console.warn(err);
-        /* eslint-enable no-console */
-      });
+    this.initializeBuilder().catch(err => {
+      /* eslint-disable no-console */
+      console.warn(err);
+      /* eslint-enable no-console */
+    });
   }
 
   destroyed() {
@@ -42,14 +41,18 @@ export class FormBuilder extends Vue {
   initializeBuilder(): Promise<any> {
     if (this.form) {
       // @ts-ignore
-      this.builder = new FormioFormBuilder(this.$refs.formio, this.form, this.options);
+      this.builder = new FormioFormBuilder(
+        this.$refs.formio,
+        this.form,
+        this.options
+      );
       this.builderReady = this.builder.setDisplay(this.form.display);
       return this.builderReady.then(() => {
         this.builder.instance.events.onAny((...args: any[]) => {
-          const eventParts = args[0].split('.');
+          const eventParts = args[0].split(".");
 
           // Only handle formio events.
-          if (eventParts[0] !== 'formio' || eventParts.length !== 2) {
+          if (eventParts[0] !== "formio" || eventParts.length !== 2) {
             return;
           }
 
@@ -59,21 +62,23 @@ export class FormBuilder extends Vue {
           this.$emit.apply(this, args);
 
           // Emit a change event if the schema changes.
-          if (['saveComponent', 'updateComponent', 'deleteComponent'].includes(eventParts[1])) {
-            args[0] = 'change';
+          if (
+            ["saveComponent", "updateComponent", "deleteComponent"].includes(
+              eventParts[1]
+            )
+          ) {
+            args[0] = "change";
             this.$emit.apply(this, args);
           }
         });
       });
-
-    }
-    else {
+    } else {
       // If we get to here there is no src or form
-      return Promise.reject('Must set form attribute');
+      return Promise.reject("Must set form attribute");
     }
   }
 
   render(createElement: any) {
-    return createElement('div', { ref: 'formio' });
+    return createElement("div", { ref: "formio" });
   }
-};
+}

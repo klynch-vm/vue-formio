@@ -1,11 +1,11 @@
 /* globals console, Promise */
-import Vue from 'vue';
-import { Component, Prop, Watch } from 'vue-property-decorator';
-import AllComponents from 'formiojs/components';
-import Components from 'formiojs/components/Components';
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
+import AllComponents from "formiojs/components";
+import Components from "formiojs/components/Components";
 Components.setComponents(AllComponents);
-import FormioForm from 'formiojs/Form';
-import Formio from 'formiojs/Formio';
+import FormioForm from "formiojs/Form";
+import Formio from "formiojs/Formio";
 
 @Component
 export class Form extends Vue {
@@ -29,35 +29,35 @@ export class Form extends Vue {
   @Prop({ default: () => {} })
   options?: object;
 
-  @Watch('src')
+  @Watch("src")
   srcChange(value: string) {
     if (this.formio) {
       this.formio.src = value;
     }
   }
 
-  @Watch('url')
+  @Watch("url")
   urlChange(value: string) {
     if (this.formio) {
       this.formio.url = value;
     }
   }
 
-  @Watch('form')
+  @Watch("form")
   formChange(value: object) {
     if (this.formio) {
       this.formio.form = value;
     }
   }
 
-  @Watch('submission')
+  @Watch("submission")
   submissionhange(value: object) {
     if (this.formio) {
       this.formio.submission = value;
     }
   }
 
-  @Watch('language')
+  @Watch("language")
   languageChange(value: string) {
     if (this.formio) {
       this.formio.language = value;
@@ -69,7 +69,7 @@ export class Form extends Vue {
       .then(() => {
         this.setupForm();
       })
-      .catch((err) => {
+      .catch(err => {
         console.warn(err);
       });
   }
@@ -84,39 +84,33 @@ export class Form extends Vue {
     return new Promise((resolve, reject) => {
       if (this.src) {
         resolve(
-          new FormioForm(this.$refs.formio, this.src, this.options)
-            .ready
-            .then(
-              (formio: any): any => {
-                this.formio = formio;
-                return formio;
-              },
-            )
+          new FormioForm(this.$refs.formio, this.src, this.options).ready
+            .then((formio: any): any => {
+              this.formio = formio;
+              return formio;
+            })
             .catch((err: Error) => {
               /* eslint-disable no-console */
               console.error(err);
               /* eslint-enable no-console */
-            }),
+            })
         );
       } else if (this.form) {
         resolve(
-          new FormioForm(this.$refs.formio, this.form, this.options)
-            .ready
-            .then(
-              (formio: any): any => {
-                this.formio = formio;
-                return formio;
-              },
-            )
+          new FormioForm(this.$refs.formio, this.form, this.options).ready
+            .then((formio: any): any => {
+              this.formio = formio;
+              return formio;
+            })
             .catch((err: Error) => {
               /* eslint-disable no-console */
               console.error(err);
               /* eslint-enable no-console */
-            }),
+            })
         );
       } else {
         // If we get to here there is no src or form
-        reject('Must set src or form attribute');
+        reject("Must set src or form attribute");
       }
     });
   }
@@ -133,13 +127,13 @@ export class Form extends Vue {
       this.formio.url = this.url;
     }
 
-    this.formio.language = this.language ? this.language : 'en';
+    this.formio.language = this.language ? this.language : "en";
 
     this.formio.events.onAny((...args: any[]) => {
-      const eventParts = args[0].split('.');
+      const eventParts = args[0].split(".");
 
       // Only handle formio events.
-      if (eventParts[0] !== 'formio' || eventParts.length !== 2) {
+      if (eventParts[0] !== "formio" || eventParts.length !== 2) {
         return;
       }
 
@@ -149,7 +143,7 @@ export class Form extends Vue {
       this.$emit.apply(this, args);
 
       // Emit custom events under their own name as well.
-      if (eventParts[1] === 'customEvent') {
+      if (eventParts[1] === "customEvent") {
         args[0] = args[1].type;
         this.$emit.apply(this, args);
       }
@@ -157,6 +151,6 @@ export class Form extends Vue {
   }
 
   render(createElement: any) {
-    return createElement('div', { ref: 'formio' });
+    return createElement("div", { ref: "formio" });
   }
 }
